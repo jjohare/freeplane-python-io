@@ -1225,15 +1225,22 @@ class Node(object):
 
     @property
     def hyperlink(self):
-        return self._node.attrib.get("LINK","")
+        link = self._node.attrib.get("LINK","")
+
+        # Unescape XML encoding
+        link = link.replace('&amp;', '&')
+
+        return link
 
     @hyperlink.setter
     def hyperlink(self, strLink, modified=''):
         self._node.attrib["LINK"] = strLink
 
+        # Escape & characters 
+        strLink = strLink.replace('&', '&amp;')
 
-
-
+        self._node.attrib["LINK"] = strLink
+    
         #
         # set creation and modification dates
         #
@@ -2847,4 +2854,3 @@ if __name__ == "__main__":
 
     # create execute class init with command line environment
     Mindmap(id='cli')
-
